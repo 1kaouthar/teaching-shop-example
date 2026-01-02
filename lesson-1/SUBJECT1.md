@@ -207,7 +207,7 @@ Replace the product mapping section with:
 ## Push and Create Pull Request
 
 1. Push your branch to the remote repository
-2. Create a Pull Request on GitHub/GitLab:
+2. Create a Pull Request on GitHub:
    - Base: `main`
    - Compare: your feature branch
    - Write a clear title and description
