@@ -4,13 +4,21 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { AuthContextProvider } from '../contexts/AuthContext';
 import { ProductsContextProvider } from '../contexts/ProductsContext';
-import ProtectedLayout from '../components/ProtectedLayout';
-import CheckoutPage from './CheckoutPage';
+import { ProtectedLayout } from '../shared/layouts';
+import CheckoutPage from './page';
 
 const renderCheckoutPage = (isAuthenticated = true) => {
   if (isAuthenticated) {
     localStorage.setItem('token', 'test-token');
-    localStorage.setItem('user', JSON.stringify({ id: 1, username: 'testuser', email: 'test@example.com', is_staff: false }));
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        id: 1,
+        username: 'testuser',
+        email: 'test@example.com',
+        is_staff: false,
+      })
+    );
   }
 
   return render(

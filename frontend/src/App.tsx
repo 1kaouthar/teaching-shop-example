@@ -1,14 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import ProtectedLayout from './components/ProtectedLayout';
-import AdminLayout from './components/AdminLayout';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import CheckoutPage from './pages/CheckoutPage';
-import OrderConfirmationPage from './pages/OrderConfirmationPage';
-import MyOrdersPage from './pages/MyOrdersPage';
-import AdminOrdersPage from './pages/AdminOrdersPage';
+import { Header, ProtectedLayout, AdminLayout } from './shared/layouts';
+import HomePage from './(home)/page';
+import LoginPage from './(auth)/login/page';
+import RegisterPage from './(auth)/register/page';
+import CheckoutPage from './(checkout)/page';
+import OrderConfirmationPage from './(orders)/order/page';
+import MyOrdersPage from './(orders)/page';
+import AdminOrdersPage from './(admin)/orders/page';
 
 export default function App() {
   return (

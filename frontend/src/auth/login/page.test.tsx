@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthContextProvider } from '../contexts/AuthContext';
-import LoginPage from './LoginPage';
+import { AuthContextProvider } from '../../contexts/AuthContext';
+import LoginPage from './page';
 
 const renderLoginPage = () => {
   return render(
@@ -51,10 +51,11 @@ describe('LoginPage', () => {
     // Mock fetch
     const mockFetch = vi.fn().mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve({
-        token: 'test-token',
-        user: { id: 1, username: 'testuser', email: 'test@example.com' }
-      }),
+      json: () =>
+        Promise.resolve({
+          token: 'test-token',
+          user: { id: 1, username: 'testuser', email: 'test@example.com' },
+        }),
     });
     vi.stubGlobal('fetch', mockFetch);
 

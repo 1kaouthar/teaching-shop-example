@@ -39,15 +39,31 @@ cd core && uv run python manage.py test    # Run Django tests
 - `frontend/` - React 19 + Vite + TypeScript + Tailwind CSS SPA
 - `backend/` - Django 5 + Django REST Framework API
 
+**Frontend Structure (theme-based organization):**
+```
+src/
+├── home/             # Home page + scoped components
+├── auth/             # Login/Register pages + shared auth components
+├── checkout/         # Checkout page + payment components
+├── orders/           # Orders list + order detail pages
+├── admin/orders/     # Admin orders page + admin components
+├── shared/
+│   ├── components/   # LoadingSpinner, StatusBadge, EmptyState, PageContainer
+│   └── layouts/      # Header, ProtectedLayout, AdminLayout
+├── contexts/         # AuthContext, ProductsContext
+├── api/              # API clients (auth, products, orders)
+├── App.tsx           # Route definitions
+└── main.tsx          # Entry point with context providers
+```
+
 **Frontend Key Files:**
 - `src/main.tsx` - Entry point, wraps App with AuthContext and ProductsContext
+- `src/App.tsx` - Main component with routing
 - `src/contexts/AuthContext.tsx` - Authentication state (token, user, login/logout)
 - `src/contexts/ProductsContext.tsx` - Global products state management
-- `src/api/products.ts` - Products API client
-- `src/api/auth.ts` - Auth API (login, register)
-- `src/api/orders.ts` - Orders API (create, list, get)
-- `src/App.tsx` - Main component with routing
-- `src/pages/` - LoginPage, RegisterPage, CheckoutPage, OrderConfirmationPage, MyOrdersPage
+- `src/api/` - API clients (auth.ts, products.ts, orders.ts)
+- `src/shared/components/` - Reusable UI components
+- `src/shared/layouts/` - App-level layouts (Header, ProtectedLayout, AdminLayout)
 
 **Backend Key Files:**
 - `core/api/models.py` - Product and Order models
@@ -90,3 +106,30 @@ cd core && uv run python manage.py test    # Run Django tests
 - Card numbers starting with `0000` are rejected (simulates declined card)
 - All other 16-digit numbers are accepted (simulates successful payment)
 - Order status: `pending` → `paid` (success) or `failed` (declined)
+
+## Frontend Organization Rules
+
+### Theme-based folder structure
+- Organize by feature/theme, NOT by type (no generic `components/` folder with random files)
+- Each theme folder contains:
+  - `page.tsx` - The main page component
+  - Scoped components used only by that theme (e.g., `ProductPreview.tsx`, `PaymentForm.tsx`)
+  - `page.test.tsx` - Tests alongside the component they test
+- Nested routes use subfolders: `orders/order/page.tsx` for `/order/:orderId`
+
+### Shared code location
+- `shared/components/` - Only truly reusable UI components (LoadingSpinner, StatusBadge, EmptyState, PageContainer)
+- `shared/layouts/` - App-level layout components (Header, ProtectedLayout, AdminLayout)
+- `shared/hooks/` - Custom hooks shared across themes
+- `contexts/` - Global state (AuthContext, ProductsContext)
+- `api/` - API client functions
+
+### Component guidelines
+- Keep components small and focused (single responsibility)
+- Extract repeated UI patterns into shared components
+- Pages should compose smaller components, not contain all logic inline
+- Use barrel exports (`index.ts`) for shared folders
+
+### TypeScript imports
+- Use `import type { ... }` for type-only imports (required by verbatimModuleSyntax)
+- Example: `import type { ReactNode } from 'react';`
