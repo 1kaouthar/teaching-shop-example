@@ -1,0 +1,45 @@
+name: Backend CI
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "backend/**"
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # TODO 1: Install uv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      # TODO 2: Ruff format check
+      - name: Check formatting
+        run: uv run ruff format --check .
+
+      # TODO 3: Ruff linter
+      - name: Run linter
+        run: uv run ruff check .
+
+      - name: Run tests
+        run: |
+          cd core
+          uv run python manage.py migrate
+          uv run python manage.py test
